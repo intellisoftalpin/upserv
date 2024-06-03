@@ -4,8 +4,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - UPLOAD_PATH=/uploads
-      - BASIC_AUTH_USERNAME=emurgo
-      - BASIC_AUTH_PASSWORD=newpassword123
+      - .env
     volumes:
       - ./uploads:/uploads

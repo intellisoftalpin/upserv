@@ -1,2 +1,7 @@
 .idea/
 upserv
+# Ignore .env in the root directory
+/.env
+
+# Do not ignore .env in the /examples/ directory
+!/examples/.env
