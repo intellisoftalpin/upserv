@@ -2,8 +2,10 @@ services:
   upserv:
     build: .
     ports:
-      - "8080:8080"
+      - "${PORT}:8080"
     environment:
-      - .env
+      - UPLOAD_PATH=${UPLOAD_PATH}
+      - BASIC_AUTH_USERNAME=${BASIC_AUTH_USERNAME}
+      - BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD}
     volumes:
-      - ./uploads:/uploads
+      - ${HOST_UPLOAD_PATH}:${UPLOAD_PATH}
