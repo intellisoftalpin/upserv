@@ -9,3 +9,4 @@ services:
       - BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD}
     volumes:
       - ${HOST_UPLOAD_PATH}:${UPLOAD_PATH}
+    restart: always
