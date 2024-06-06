@@ -7,7 +7,7 @@ const CHTMLTemplate = `
         <h1>Uploaded Files</h1>
         <ul>
             {{range .}}
-                <li>{{.Name}} - {{.ModTime}}</li>
+                <li>{{.Name}}</li>
             {{end}}
         </ul>
     </body>
