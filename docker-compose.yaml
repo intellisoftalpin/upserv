@@ -10,3 +10,4 @@ services:
     volumes:
       - ${HOST_UPLOAD_PATH}:${UPLOAD_PATH}
     restart: always
+    container_name: ${UPNAME}
