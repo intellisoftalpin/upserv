@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 func (s *UpServ) UploadHandler(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +28,16 @@ func (s *UpServ) UploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	path := filepath.Join(s.UploadPath, handler.Filename)
+	// Get the current time and format it
+	currentTime := time.Now().Format("20060102_150405") // YYYYMMDD_HHMMSS
+
+	// Extract the file extension
+	extension := filepath.Ext(handler.Filename)
+	name := handler.Filename[:len(handler.Filename)-len(extension)]
+
+	// Construct the new filename with date/time postfix
+	newFilename := fmt.Sprintf("%s_%s%s", name, currentTime, extension)
+	path := filepath.Join(s.UploadPath, newFilename)
 
 	dst, err := os.Create(path)
 	if err != nil {
@@ -41,5 +51,5 @@ func (s *UpServ) UploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename)
+	fmt.Fprintf(w, "File uploaded successfully: %s", newFilename)
 }

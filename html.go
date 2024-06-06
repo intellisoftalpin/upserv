@@ -5,10 +5,11 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 	"time"
 )
 
-func (s *UpServ) ListFilesHandler(w http.ResponseWriter, r *http.Request) {
+func (s *UpServ) ListFilesHandler(w http.ResponseWriter, _ *http.Request) {
 	files, err := filepath.Glob(filepath.Join(s.UploadPath, "*.apk"))
 	if err != nil {
 		http.Error(w, "Error listing files", http.StatusInternalServerError)
@@ -32,6 +33,11 @@ func (s *UpServ) ListFilesHandler(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 
+	// Sort files by modification time in descending order
+	sort.Slice(fileInfos, func(i, j int) bool {
+		return fileInfos[i].ModTime.After(fileInfos[j].ModTime)
+	})
+
 	tmpl, err := template.New("files").Parse(CHTMLTemplate)
 	if err != nil {
 		http.Error(w, "Error parsing template", http.StatusInternalServerError)
@@ -40,6 +46,6 @@ func (s *UpServ) ListFilesHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = tmpl.Execute(w, fileInfos)
 	if err != nil {
-		panic(err)
+		http.Error(w, "Error executing template", http.StatusInternalServerError)
 	}
 }
